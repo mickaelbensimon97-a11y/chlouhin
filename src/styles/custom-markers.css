@@ -1,0 +1,66 @@
+/* Styles pour les marqueurs personnalisés */
+.custom-chabad-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-cluster-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Animation pour le marqueur sélectionné */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Amélioration des popups */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.leaflet-popup-tip {
+  background: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Amélioration des clusters */
+.cluster-small {
+  animation: none;
+}
+
+.cluster-medium {
+  animation: pulse 2s infinite;
+}
+
+.cluster-large {
+  animation: pulse 1.5s infinite;
+}
+
+/* Hover effects pour les marqueurs */
+.custom-chabad-marker:hover {
+  z-index: 1000 !important;
+}
+
+/* Transition smooth pour les marqueurs */
+.custom-chabad-marker div {
+  transition: all 0.2s ease !important;
+}
+
+.custom-chabad-marker:hover div {
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
