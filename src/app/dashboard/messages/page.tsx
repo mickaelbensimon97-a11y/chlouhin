@@ -107,11 +107,11 @@ function MessagesContent() {
             {/* Liste des conversations */}
             <div className="lg:col-span-1 space-y-2">
               {conversations.map((conv) => (
-                <button
+                <Link
                   key={conv.beth_habad_id}
-                  type="button"
+                  href={`/dashboard/messages/${conv.beth_habad_id}`}
                   onClick={() => setSelected(conv)}
-                  className={`w-full text-left p-4 rounded-2xl ring-1 transition-all duration-150 ${
+                  className={`block w-full text-left p-4 rounded-2xl ring-1 transition-all duration-150 ${
                     selected?.beth_habad_id === conv.beth_habad_id
                       ? 'bg-primary/5 ring-primary/40'
                       : 'bg-white ring-border hover:ring-primary/20'
@@ -128,7 +128,7 @@ function MessagesContent() {
                   <p className="text-xs text-muted-foreground mt-1 truncate">
                     {conv.lastMessage}
                   </p>
-                </button>
+                </Link>
               ))}
             </div>
 

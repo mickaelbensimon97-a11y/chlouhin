@@ -15,20 +15,14 @@ import {
   Clock,
   User,
   MessageSquare,
-  Send,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useFavorites } from '@/hooks/use-favorites'
 import { useAuth } from '@/components/auth/auth-provider'
-import { supabase } from '@/lib/supabase'
 import type { BethHabadLocation } from '@/lib/types'
 
 export function BethHabadDetailClient({ location }: { location: BethHabadLocation }) {
   const [copied, setCopied] = useState(false)
-  const [messageContent, setMessageContent] = useState('')
-  const [sending, setSending] = useState(false)
-  const [messageSent, setMessageSent] = useState(false)
-  const [messageError, setMessageError] = useState('')
   const { isFavorite, toggleFavorite } = useFavorites()
   const { user } = useAuth()
 
@@ -63,11 +57,7 @@ export function BethHabadDetailClient({ location }: { location: BethHabadLocatio
       url: window.location.href,
     }
     if (navigator.share) {
-      try {
-        await navigator.share(shareData)
-      } catch {
-        // ignore
-      }
+      try { await navigator.share(shareData) } catch { /* ignore */ }
     } else {
       await navigator.clipboard.writeText(window.location.href)
     }
@@ -79,30 +69,6 @@ export function BethHabadDetailClient({ location }: { location: BethHabadLocatio
       city: location.city,
       country: location.country,
     })
-  }
-
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user || !messageContent.trim()) return
-    setSending(true)
-    setMessageError('')
-
-    const { error } = await supabase.from('messages').insert({
-      sender_id: user.id,
-      beth_habad_id: location.id,
-      beth_habad_name: location.beth_habad_name,
-      content: messageContent.trim(),
-    })
-
-    if (error) {
-      setMessageError("Le message n'a pas pu être envoyé. Réessayez.")
-      setSending(false)
-      return
-    }
-
-    setMessageSent(true)
-    setMessageContent('')
-    setSending(false)
   }
 
   return (
@@ -267,67 +233,49 @@ export function BethHabadDetailClient({ location }: { location: BethHabadLocatio
               className="flex items-center gap-2 rounded-full"
             >
               <Copy className="h-4 w-4" />
-              {copied ? 'Copié !' : 'Copier l’adresse'}
+              {copied ? 'Copié !' : "Copier l'adresse"}
             </Button>
           </div>
         </div>
 
-        {/* Section message */}
-        <div className="bg-white rounded-2xl ring-1 ring-border p-6 sm:p-8">
-          <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="h-5 w-5 text-primary" />
-            <h2 className="text-base font-semibold text-foreground">
-              Envoyer un message à ce Beth Habad
-            </h2>
-          </div>
-
-          {!user ? (
-            <p className="text-sm text-muted-foreground">
-              <Link href="/login" className="text-primary hover:underline font-medium">
-                Connectez-vous
-              </Link>{' '}
-              pour envoyer un message à ce centre.
-            </p>
-          ) : messageSent ? (
-            <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm">
-              <span className="font-medium">Message envoyé !</span>
-              <span className="text-green-600">Il apparaîtra dans votre messagerie.</span>
-              <button
-                type="button"
-                onClick={() => setMessageSent(false)}
-                className="ml-auto text-green-600 hover:underline text-xs"
-              >
-                Envoyer un autre
-              </button>
+        {/* Bouton messagerie */}
+        {user ? (
+          <Link
+            href={`/dashboard/messages/${location.id}`}
+            className="flex items-center gap-4 bg-white rounded-2xl ring-1 ring-border p-5 hover:ring-primary/40 hover:shadow-md transition-all duration-200 group"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl brand-gradient shrink-0">
+              <MessageSquare className="h-5 w-5 text-white" />
             </div>
-          ) : (
-            <form onSubmit={handleSendMessage} className="space-y-3">
-              {messageError && (
-                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
-                  {messageError}
-                </p>
-              )}
-              <textarea
-                value={messageContent}
-                onChange={(e) => setMessageContent(e.target.value)}
-                rows={4}
-                required
-                placeholder={`Écrivez votre message pour ${location.beth_habad_name}…`}
-                className="w-full px-3 py-2 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
-              />
-              <div className="flex justify-end">
-                <Button
-                  type="submit"
-                  disabled={sending || !messageContent.trim()}
-                  className="flex items-center gap-2 rounded-full"
-                >
-                  <Send className="h-4 w-4" />
-                  {sending ? 'Envoi…' : 'Envoyer'}
-                </Button>
-              </div>
-            </form>
-          )}
-        </div>
+            <div className="flex-1">
+              <p className="font-medium text-foreground text-sm">Envoyer un message</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Écrivez directement à {location.beth_habad_name}
+              </p>
+            </div>
+            <span className="text-primary text-sm font-medium group-hover:translate-x-0.5 transition-transform">
+              →
+            </span>
+          </Link>
+        ) : (
+          <Link
+            href={`/login`}
+            className="flex items-center gap-4 bg-white rounded-2xl ring-1 ring-border p-5 hover:ring-primary/40 hover:shadow-md transition-all duration-200 group"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted shrink-0">
+              <MessageSquare className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div className="flex-1">
+              <p className="font-medium text-foreground text-sm">Envoyer un message</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Connectez-vous pour écrire à ce centre
+              </p>
+            </div>
+            <span className="text-primary text-sm font-medium group-hover:translate-x-0.5 transition-transform">
+              →
+            </span>
+          </Link>
+        )}
 
         <div className="text-center">
           <Link
