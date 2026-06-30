@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Phone, Mail, Globe, MapPin, Copy, Heart, Share2, Navigation, Clock, User } from 'lucide-react'
+import { X, Phone, Mail, Globe, MapPin, Copy, Heart, Share2, Navigation, Clock, User, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useFavorites } from '@/hooks/use-favorites'
+import { useAuth } from '@/components/auth/auth-provider'
+import Link from 'next/link'
 import type { BethHabadLocation } from '@/lib/types'
 
 interface ChabadDetailCardProps {
@@ -15,6 +17,7 @@ interface ChabadDetailCardProps {
 export function ChabadDetailCard({ location, onClose, userLocation }: ChabadDetailCardProps) {
   const [copied, setCopied] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { user } = useAuth()
 
   if (!location) return null
 
@@ -283,6 +286,26 @@ export function ChabadDetailCard({ location, onClose, userLocation }: ChabadDeta
               <Copy className="h-4 w-4" />
               {copied ? 'Copié !' : 'Copier'}
             </Button>
+          </div>
+
+          {/* Bouton messagerie */}
+          <div className="mt-4">
+            <Link
+              href={user ? `/dashboard/messages/${location.id}` : '/login'}
+              onClick={onClose}
+              className="flex items-center gap-3 w-full p-4 rounded-xl ring-1 ring-border hover:ring-primary/40 hover:bg-muted/30 transition-all duration-150 group"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg brand-gradient shrink-0">
+                <MessageSquare className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-medium text-foreground">Envoyer un message</p>
+                <p className="text-xs text-muted-foreground">
+                  {user ? `Écrire à ${location.beth_habad_name}` : 'Connectez-vous pour écrire'}
+                </p>
+              </div>
+              <span className="text-primary text-sm group-hover:translate-x-0.5 transition-transform">→</span>
+            </Link>
           </div>
         </div>
       </div>
