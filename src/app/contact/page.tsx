@@ -3,17 +3,33 @@
 import { useState } from 'react'
 import { Mail, MessageSquare, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { supabase } from '@/lib/supabase'
 
 export default function ContactPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Pas de backend de messagerie pour l'instant : on confirme simplement la réception côté UI.
+    setSending(true)
+    setError('')
+
+    const { error: insertError } = await supabase
+      .from('contact_messages')
+      .insert({ name, email, message })
+
+    if (insertError) {
+      setError("Le message n'a pas pu être envoyé. Merci de réessayer ou de nous écrire directement à contact@chlouhin.com.")
+      setSending(false)
+      return
+    }
+
     setSent(true)
+    setSending(false)
   }
 
   return (
@@ -57,6 +73,11 @@ export default function ContactPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl">
+                  {error}
+                </div>
+              )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">Nom</label>
@@ -94,8 +115,8 @@ export default function ContactPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full rounded-full">
-                Envoyer le message
+              <Button type="submit" className="w-full rounded-full" disabled={sending}>
+                {sending ? 'Envoi...' : 'Envoyer le message'}
               </Button>
             </form>
           )}

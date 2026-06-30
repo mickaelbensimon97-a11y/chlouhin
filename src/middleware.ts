@@ -1,33 +1,12 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  
-  // Pages protégées qui nécessitent une authentification
-  const protectedPaths = [
-    "/dashboard",
-    "/settings",
-  ];
-  
-  // Pages admin qui nécessitent des droits d'administrateur
-  const adminPaths = [
-    "/admin",
-  ];
-  
-  // Vérifier si l'utilisateur est authentifié (simulation avec un cookie)
-  const isAuthenticated = request.cookies.get("auth-token")?.value;
-  
-  // Rediriger vers login si non authentifié et page protégée
-  if (protectedPaths.some(path => pathname.startsWith(path)) && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-  
-  // Rediriger vers login si non admin et page admin
-  if (adminPaths.some(path => pathname.startsWith(path)) && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-  
+// La session Supabase (via le client navigateur @supabase/supabase-js) est
+// stockée côté client (localStorage), pas dans un cookie "auth-token".
+// Ce middleware ne peut donc pas vérifier la vraie session ici sans le
+// package @supabase/ssr. La protection réelle des pages /dashboard,
+// /settings et /admin est assurée côté client par <ProtectedRoute> qui
+// s'appuie sur la vraie session Supabase (voir src/components/auth).
+export function middleware() {
   return NextResponse.next();
 }
 

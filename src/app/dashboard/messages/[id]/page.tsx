@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 export default function ConversationPage({ params }: { params: { id: string } }) {
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -44,7 +46,7 @@ export default function ConversationPage({ params }: { params: { id: string } })
               
               <div className="flex justify-start">
                 <div className="bg-gray-100 rounded-lg p-3 max-w-[70%]">
-                  <p className="text-sm">Merci beaucoup! Quelle est l'adresse exacte?</p>
+                  <p className="text-sm">Merci beaucoup! Quelle est l&apos;adresse exacte?</p>
                   <p className="text-xs text-gray-500 mt-1">14:40</p>
                 </div>
               </div>
@@ -65,5 +67,6 @@ export default function ConversationPage({ params }: { params: { id: string } })
         </Card>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

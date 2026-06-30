@@ -7,18 +7,33 @@ import { supabase } from '@/lib/supabase'
 import { normalizeText } from '@/lib/normalize'
 import type { BethHabadLocation } from '@/lib/types'
 
+const PAGE_SIZE = 60
+
 export default function AnnuairePage() {
   const [locations, setLocations] = useState<BethHabadLocation[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState('')
   const [countryFilter, setCountryFilter] = useState('')
   const [sortBy, setSortBy] = useState<'name' | 'country'>('country')
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+
+  // Réinitialise la pagination d'affichage dès qu'un filtre change, en
+  // ajustant l'état pendant le rendu plutôt que dans un effet séparé
+  // (évite un rendu en cascade inutile).
+  const filterKey = `${query}|${countryFilter}|${sortBy}`
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey)
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey)
+    setVisibleCount(PAGE_SIZE)
+  }
 
   useEffect(() => {
     async function fetchLocations() {
+      // On ne sélectionne que les colonnes utilisées par les cartes de
+      // l'annuaire (au lieu de '*') pour réduire la taille de la réponse.
       const { data } = await supabase
         .from('shlouhim')
-        .select('*')
+        .select('id, beth_habad_name, city, country, phone, website, chabad_url')
 
       if (data) {
         setLocations(data as BethHabadLocation[])
@@ -117,7 +132,7 @@ export default function AnnuairePage() {
               {filtered.length} Beth Habad{filtered.length > 1 ? 's' : ''}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filtered.map((location) => (
+              {filtered.slice(0, visibleCount).map((location) => (
                 <Link
                   key={location.id}
                   href={`/beth-habad/${location.id}`}
@@ -147,6 +162,18 @@ export default function AnnuairePage() {
                 </Link>
               ))}
             </div>
+
+            {visibleCount < filtered.length && (
+              <div className="text-center mt-8">
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  className="px-5 py-2.5 border border-border rounded-full text-sm text-foreground hover:bg-muted transition-colors"
+                >
+                  Charger plus ({filtered.length - visibleCount} restants)
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

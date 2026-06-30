@@ -1,7 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 export default function MessagesPage() {
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-muted/40">
       <div className="brand-gradient text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -72,5 +74,6 @@ export default function MessagesPage() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

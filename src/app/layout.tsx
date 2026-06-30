@@ -15,9 +15,40 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://chlouhin-exlk.vercel.app";
+const ogTitle = "ChlouhIN - Réseau mondial des Beth Habad";
+const ogDescription = "Connectez les Chaliah (rabbins émissaires) avec les voyageurs juifs dans le monde entier";
+
 export const metadata: Metadata = {
-  title: "ChlouhIN - Réseau mondial des Beth Habad",
-  description: "Connectez les Chaliah (rabbins émissaires) avec les voyageurs juifs dans le monde entier",
+  metadataBase: new URL(siteUrl),
+  title: ogTitle,
+  description: ogDescription,
+  openGraph: {
+    title: ogTitle,
+    description: ogDescription,
+    url: siteUrl,
+    siteName: "ChlouhIN",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ChlouhIN - Réseau mondial des Beth Habad",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: ogTitle,
+    description: ogDescription,
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/icon-512.png",
+  },
 };
 
 export default function RootLayout({
