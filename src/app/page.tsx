@@ -101,7 +101,7 @@ export default function Home() {
                 name: "New York",
                 query: "New York",
                 country: "USA",
-                photo: "https://commons.wikimedia.org/wiki/Special:FilePath/770_Eastern_Parkway.jpg",
+                photo: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&h=320&fit=crop&auto=format&q=80",
               },
               {
                 name: "Londres",
