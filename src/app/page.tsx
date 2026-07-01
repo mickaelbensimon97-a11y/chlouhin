@@ -101,7 +101,7 @@ export default function Home() {
                 name: "New York",
                 query: "New York",
                 country: "USA",
-                photo: "/images/770.svg",
+                photo: "/images/770.jpg",
               },
               {
                 name: "Londres",
