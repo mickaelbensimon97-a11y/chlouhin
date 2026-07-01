@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#87CEEB"/>
+      <stop offset="60%" stop-color="#E8D5A3"/>
+      <stop offset="100%" stop-color="#C4A882"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4B896"/>
+      <stop offset="100%" stop-color="#A8855A"/>
+    </linearGradient>
+  </defs>
+  <!-- Ciel -->
+  <rect width="600" height="320" fill="url(#sky)"/>
+  <!-- Dôme du Rocher - coupole bleue -->
+  <ellipse cx="300" cy="130" rx="55" ry="55" fill="#4A7FA5"/>
+  <ellipse cx="300" cy="115" rx="45" ry="45" fill="#5B9BC4"/>
+  <ellipse cx="300" cy="103" rx="38" ry="22" fill="#6BAED4"/>
+  <rect x="250" y="130" width="100" height="60" fill="#C8A96E"/>
+  <!-- Mur des Lamentations -->
+  <rect x="50" y="190" width="500" height="130" fill="url(#wall)"/>
+  <!-- Pierres du mur -->
+  <line x1="50" y1="210" x2="550" y2="210" stroke="#B8956A" stroke-width="1"/>
+  <line x1="50" y1="228" x2="550" y2="228" stroke="#B8956A" stroke-width="1"/>
+  <line x1="50" y1="246" x2="550" y2="246" stroke="#B8956A" stroke-width="1"/>
+  <line x1="50" y1="264" x2="550" y2="264" stroke="#B8956A" stroke-width="1"/>
+  <line x1="50" y1="282" x2="550" y2="282" stroke="#B8956A" stroke-width="1"/>
+  <line x1="130" y1="190" x2="130" y2="320" stroke="#B8956A" stroke-width="1"/>
+  <line x1="220" y1="190" x2="220" y2="320" stroke="#B8956A" stroke-width="1"/>
+  <line x1="310" y1="190" x2="310" y2="320" stroke="#B8956A" stroke-width="1"/>
+  <line x1="400" y1="190" x2="400" y2="320" stroke="#B8956A" stroke-width="1"/>
+  <line x1="490" y1="190" x2="490" y2="320" stroke="#B8956A" stroke-width="1"/>
+  <!-- Silhouettes de personnes en prière -->
+  <rect x="150" y="270" width="8" height="25" rx="2" fill="#7A5C3A"/>
+  <ellipse cx="154" cy="268" rx="5" ry="5" fill="#7A5C3A"/>
+  <rect x="250" y="268" width="8" height="27" rx="2" fill="#6B4F2E"/>
+  <ellipse cx="254" cy="266" rx="5" ry="5" fill="#6B4F2E"/>
+  <rect x="340" y="272" width="7" height="23" rx="2" fill="#7A5C3A"/>
+  <ellipse cx="343" cy="270" rx="4" ry="4" fill="#7A5C3A"/>
+</svg>

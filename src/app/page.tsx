@@ -95,13 +95,13 @@ export default function Home() {
                 name: "Jérusalem",
                 query: "Jerusalem",
                 country: "Israël",
-                photo: "https://images.unsplash.com/photo-1574513828599-a4fefc82fe7d?w=600&h=320&fit=crop&auto=format&q=80",
+                photo: "/images/jerusalem.svg",
               },
               {
                 name: "New York",
                 query: "New York",
                 country: "USA",
-                photo: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&h=320&fit=crop&auto=format&q=80",
+                photo: "/images/770.svg",
               },
               {
                 name: "Londres",

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B0C4DE"/>
+      <stop offset="100%" stop-color="#708090"/>
+    </linearGradient>
+    <linearGradient id="building" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8B7355"/>
+      <stop offset="100%" stop-color="#6B5A42"/>
+    </linearGradient>
+  </defs>
+  <!-- Ciel -->
+  <rect width="600" height="320" fill="url(#bg)"/>
+  <!-- Arbres en arrière plan -->
+  <ellipse cx="80" cy="200" rx="40" ry="30" fill="#4A7A4A"/>
+  <ellipse cx="520" cy="195" rx="45" ry="32" fill="#3D6B3D"/>
+  <ellipse cx="480" cy="205" rx="35" ry="25" fill="#4A7A4A"/>
+  <!-- Trottoir / rue -->
+  <rect x="0" y="270" width="600" height="50" fill="#B0A090"/>
+  <rect x="0" y="265" width="600" height="10" fill="#C0B0A0"/>
+  <!-- Bâtiment principal 770 -->
+  <rect x="150" y="100" width="300" height="175" fill="url(#building)"/>
+  <!-- Toit avec style -->
+  <polygon points="150,100 450,100 430,75 170,75" fill="#7A6548"/>
+  <polygon points="170,75 430,75 420,55 180,55" fill="#8B7355"/>
+  <!-- Fenêtres -->
+  <rect x="175" y="120" width="35" height="45" rx="3" fill="#4A6B8A" opacity="0.8"/>
+  <rect x="230" y="120" width="35" height="45" rx="3" fill="#4A6B8A" opacity="0.8"/>
+  <rect x="285" y="120" width="35" height="45" rx="3" fill="#6B8FAA" opacity="0.9"/>
+  <rect x="340" y="120" width="35" height="45" rx="3" fill="#4A6B8A" opacity="0.8"/>
+  <rect x="395" y="120" width="35" height="45" rx="3" fill="#4A6B8A" opacity="0.8"/>
+  <rect x="175" y="185" width="35" height="40" rx="3" fill="#4A6B8A" opacity="0.7"/>
+  <rect x="230" y="185" width="35" height="40" rx="3" fill="#4A6B8A" opacity="0.7"/>
+  <rect x="340" y="185" width="35" height="40" rx="3" fill="#4A6B8A" opacity="0.7"/>
+  <rect x="395" y="185" width="35" height="40" rx="3" fill="#4A6B8A" opacity="0.7"/>
+  <!-- Entrée principale avec arche -->
+  <rect x="270" y="210" width="60" height="65" fill="#3A2E22"/>
+  <ellipse cx="300" cy="210" rx="30" ry="15" fill="#3A2E22"/>
+  <!-- Détails de l'entrée -->
+  <rect x="278" y="225" width="18" height="35" rx="2" fill="#5A4A38"/>
+  <rect x="304" y="225" width="18" height="35" rx="2" fill="#5A4A38"/>
+  <!-- Escaliers -->
+  <rect x="240" y="270" width="120" height="5" fill="#A09080"/>
+  <rect x="250" y="265" width="100" height="5" fill="#B0A090"/>
+  <!-- Numéro 770 -->
+  <text x="285" y="50" font-family="Georgia, serif" font-size="14" fill="#D4C4A0" font-weight="bold">770</text>
+</svg>
