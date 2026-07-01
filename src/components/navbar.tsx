@@ -15,7 +15,9 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, User, MessageSquare, Settings, LogOut, Home, Map, Heart } from "lucide-react";
+import { Menu, User, MessageSquare, Settings, LogOut, Home, Map, Heart, ShieldCheck } from "lucide-react";
+
+const ADMIN_EMAIL = 'ohaleihabad@gmail.com'
 import { useAuth } from "@/components/auth/auth-provider";
 
 export function Navbar() {
@@ -99,6 +101,17 @@ export function Navbar() {
                   <span>Paramètres</span>
                 </Link>
               </DropdownMenuItem>
+              {user.email === ADMIN_EMAIL && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin" className="flex items-center">
+                      <ShieldCheck className="mr-2 h-4 w-4" />
+                      <span>Administration</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut} className="flex items-center">
                 <LogOut className="mr-2 h-4 w-4" />
