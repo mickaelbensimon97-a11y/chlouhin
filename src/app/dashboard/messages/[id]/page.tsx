@@ -30,6 +30,7 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
   const [bethHabadName, setBethHabadName] = useState('')
   const [content, setContent] = useState('')
   const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
   const [loading, setLoading] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -69,6 +70,7 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
     e.preventDefault()
     if (!user || !content.trim()) return
     setSending(true)
+    setSendError('')
 
     const { data, error } = await supabase
       .from('messages')
@@ -81,7 +83,9 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
       .select('id, content, created_at')
       .single()
 
-    if (!error && data) {
+    if (error) {
+      setSendError(`Erreur : ${error.message}`)
+    } else if (data) {
       setMessages((prev) => [...prev, data as Message])
       setContent('')
     }
@@ -146,7 +150,12 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
           </div>
 
           {/* Zone de saisie */}
-          <div className="border-t border-border p-4">
+          <div className="border-t border-border p-4 space-y-2">
+            {sendError && (
+              <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
+                {sendError}
+              </p>
+            )}
             <form onSubmit={handleSend} className="flex gap-2">
               <input
                 type="text"
