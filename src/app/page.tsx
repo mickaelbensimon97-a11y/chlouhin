@@ -85,10 +85,30 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {[
-              { name: "Paris", query: "Paris", country: "France", image: "🗼" },
-              { name: "Jérusalem", query: "Jerusalem", country: "Israël", image: "🕍" },
-              { name: "New York", query: "New York", country: "USA", image: "🗽" },
-              { name: "Londres", query: "London", country: "Royaume-Uni", image: "🏰" },
+              {
+                name: "Paris",
+                query: "Paris",
+                country: "France",
+                photo: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=320&fit=crop&auto=format&q=80",
+              },
+              {
+                name: "Jérusalem",
+                query: "Jerusalem",
+                country: "Israël",
+                photo: "https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=320&fit=crop&auto=format&q=80",
+              },
+              {
+                name: "New York",
+                query: "New York",
+                country: "USA",
+                photo: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=320&fit=crop&auto=format&q=80",
+              },
+              {
+                name: "Londres",
+                query: "London",
+                country: "Royaume-Uni",
+                photo: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=320&fit=crop&auto=format&q=80",
+              },
             ].map((dest) => (
               <Link
                 key={dest.name}
@@ -96,8 +116,14 @@ export default function Home() {
                 className="group"
               >
                 <Card className="overflow-hidden border-0 ring-1 ring-border hover:ring-primary/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer py-0 gap-0">
-                  <div className="h-32 brand-gradient flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
-                    {dest.image}
+                  <div className="relative h-36 overflow-hidden bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={dest.photo}
+                      alt={dest.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
