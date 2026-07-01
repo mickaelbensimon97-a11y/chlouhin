@@ -241,7 +241,7 @@ export function BethHabadDetailClient({ location }: { location: BethHabadLocatio
         {/* Bouton messagerie */}
         {user ? (
           <Link
-            href={`/dashboard/messages/${location.id}`}
+            href={`/dashboard/messages/${location.id}?name=${encodeURIComponent(location.beth_habad_name)}`}
             className="flex items-center gap-4 bg-white rounded-2xl ring-1 ring-border p-5 hover:ring-primary/40 hover:shadow-md transition-all duration-200 group"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl brand-gradient shrink-0">

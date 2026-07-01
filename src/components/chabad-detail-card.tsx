@@ -291,7 +291,7 @@ export function ChabadDetailCard({ location, onClose, userLocation }: ChabadDeta
           {/* Bouton messagerie */}
           <div className="mt-4">
             <Link
-              href={user ? `/dashboard/messages/${location.id}` : '/login'}
+              href={user ? `/dashboard/messages/${location.id}?name=${encodeURIComponent(location.beth_habad_name)}` : '/login'}
               onClick={onClose}
               className="flex items-center gap-3 w-full p-4 rounded-xl ring-1 ring-border hover:ring-primary/40 hover:bg-muted/30 transition-all duration-150 group"
             >

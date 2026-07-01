@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Send, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -26,8 +27,11 @@ function formatDate(iso: string) {
 
 function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
   const { user } = useAuth()
+  const searchParams = useSearchParams()
   const [messages, setMessages] = useState<Message[]>([])
-  const [bethHabadName, setBethHabadName] = useState('')
+  const [bethHabadName, setBethHabadName] = useState(
+    decodeURIComponent(searchParams.get('name') || '')
+  )
   const [content, setContent] = useState('')
   const [sending, setSending] = useState(false)
   const [sendError, setSendError] = useState('')
@@ -184,7 +188,9 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
 export default function ConversationPage({ params }: { params: { id: string } }) {
   return (
     <ProtectedRoute>
-      <ConversationContent bethHabadId={params.id} />
+      <Suspense fallback={<div className="min-h-screen brand-gradient" />}>
+        <ConversationContent bethHabadId={params.id} />
+      </Suspense>
     </ProtectedRoute>
   )
 }

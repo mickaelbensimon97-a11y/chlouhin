@@ -109,7 +109,7 @@ function MessagesContent() {
               {conversations.map((conv) => (
                 <Link
                   key={conv.beth_habad_id}
-                  href={`/dashboard/messages/${conv.beth_habad_id}`}
+                  href={`/dashboard/messages/${conv.beth_habad_id}?name=${encodeURIComponent(conv.beth_habad_name)}`}
                   onClick={() => setSelected(conv)}
                   className={`block w-full text-left p-4 rounded-2xl ring-1 transition-all duration-150 ${
                     selected?.beth_habad_id === conv.beth_habad_id
