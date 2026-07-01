@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/components/auth/auth-provider'
 
-const ADMIN_EMAIL = 'ohaleihabad@gmail.com'
+const ADMIN_EMAIL = 'mickaelbensimon97@gmail.com'
 
 interface ChaliaProfile {
   id: number

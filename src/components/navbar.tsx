@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu, User, MessageSquare, Settings, LogOut, Home, Map, Heart, ShieldCheck } from "lucide-react";
 
-const ADMIN_EMAIL = 'ohaleihabad@gmail.com'
+const ADMIN_EMAIL = 'mickaelbensimon97@gmail.com'
 import { useAuth } from "@/components/auth/auth-provider";
 
 export function Navbar() {
