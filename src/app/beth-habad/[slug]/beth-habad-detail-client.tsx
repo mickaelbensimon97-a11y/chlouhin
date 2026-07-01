@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft,
@@ -15,16 +15,30 @@ import {
   Clock,
   User,
   MessageSquare,
+  Banknote,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useFavorites } from '@/hooks/use-favorites'
 import { useAuth } from '@/components/auth/auth-provider'
+import { getCountryInfo, getLocalTime } from '@/lib/country-info'
 import type { BethHabadLocation } from '@/lib/types'
 
 export function BethHabadDetailClient({ location }: { location: BethHabadLocation }) {
   const [copied, setCopied] = useState(false)
+  const [localTime, setLocalTime] = useState('')
   const { isFavorite, toggleFavorite } = useFavorites()
   const { user } = useAuth()
+
+  const countryInfo = getCountryInfo(location.country)
+
+  useEffect(() => {
+    if (!countryInfo) return
+    setLocalTime(getLocalTime(countryInfo.timezone))
+    const interval = setInterval(() => {
+      setLocalTime(getLocalTime(countryInfo.timezone))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [countryInfo])
 
   const handleCall = () => location.phone && window.open(`tel:${location.phone}`, '_self')
   const handleEmail = () => location.email && window.open(`mailto:${location.email}`, '_blank')
@@ -199,7 +213,39 @@ export function BethHabadDetailClient({ location }: { location: BethHabadLocatio
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-8 pt-6 border-t border-border">
+          {/* Heure locale + Devise */}
+          {countryInfo && (
+            <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-border">
+              <div className="flex items-center gap-3 bg-muted/40 rounded-2xl px-4 py-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl brand-gradient shrink-0">
+                  <Clock className="h-4 w-4 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground font-medium">Heure locale</p>
+                  <p className="text-base font-bold text-foreground tabular-nums">
+                    {localTime || '—'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-muted/40 rounded-2xl px-4 py-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl brand-gradient shrink-0">
+                  <Banknote className="h-4 w-4 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground font-medium">Devise locale</p>
+                  <p className="text-base font-bold text-foreground">
+                    {countryInfo.currencySymbol}{' '}
+                    <span className="text-sm font-normal text-muted-foreground">
+                      {countryInfo.currency}
+                    </span>
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">{countryInfo.currencyName}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-border">
             {location.phone && (
               <Button onClick={handleCall} className="flex items-center gap-2 rounded-full">
                 <Phone className="h-4 w-4" />
