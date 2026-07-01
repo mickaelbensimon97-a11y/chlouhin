@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Send, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -25,9 +25,14 @@ function formatDate(iso: string) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
 }
 
-function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
+function ConversationContent() {
   const { user } = useAuth()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  // Extraire l'ID depuis le chemin /dashboard/messages/[id]
+  const bethHabadId = pathname.split('/').pop() || ''
+
   const [messages, setMessages] = useState<Message[]>([])
   const [bethHabadName, setBethHabadName] = useState(
     decodeURIComponent(searchParams.get('name') || '')
@@ -39,9 +44,8 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!user) return
+    if (!user || !bethHabadId) return
     async function load() {
-      // Récupérer les messages envoyés à ce Beth Habad
       const { data } = await supabase
         .from('messages')
         .select('id, content, created_at, beth_habad_name')
@@ -52,8 +56,8 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
       if (data && data.length > 0) {
         setBethHabadName(data[0].beth_habad_name)
         setMessages(data as Message[])
-      } else {
-        // Récupérer le nom du Beth Habad depuis la table shlouhim
+      } else if (!searchParams.get('name')) {
+        // Fallback : récupérer le nom depuis shlouhim si pas dans l'URL
         const { data: loc } = await supabase
           .from('shlouhim')
           .select('beth_habad_name')
@@ -64,7 +68,7 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
       setLoading(false)
     }
     load()
-  }, [user, bethHabadId])
+  }, [user, bethHabadId, searchParams])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -72,15 +76,22 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user || !content.trim()) return
+    if (!user || !content.trim() || !bethHabadId) return
     setSending(true)
     setSendError('')
+
+    const numericId = parseInt(bethHabadId, 10)
+    if (isNaN(numericId)) {
+      setSendError('Identifiant de centre invalide. Revenez depuis la fiche Beth Habad.')
+      setSending(false)
+      return
+    }
 
     const { data, error } = await supabase
       .from('messages')
       .insert({
         sender_id: user.id,
-        beth_habad_id: parseInt(bethHabadId),
+        beth_habad_id: numericId,
         beth_habad_name: bethHabadName,
         content: content.trim(),
       })
@@ -185,11 +196,11 @@ function ConversationContent({ bethHabadId }: { bethHabadId: string }) {
   )
 }
 
-export default function ConversationPage({ params }: { params: { id: string } }) {
+export default function ConversationPage() {
   return (
     <ProtectedRoute>
       <Suspense fallback={<div className="min-h-screen brand-gradient" />}>
-        <ConversationContent bethHabadId={params.id} />
+        <ConversationContent />
       </Suspense>
     </ProtectedRoute>
   )
